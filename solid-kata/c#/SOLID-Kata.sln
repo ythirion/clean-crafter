@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DIP", "DIP\DIP.csproj", "{2B7B182E-BCA4-4D83-A04C-F2100E142B83}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DIP.Tests", "DIP.Tests\DIP.Tests.csproj", "{0F753CD1-D4B9-47B3-A6BB-550DBCF468E8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2B7B182E-BCA4-4D83-A04C-F2100E142B83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B7B182E-BCA4-4D83-A04C-F2100E142B83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B7B182E-BCA4-4D83-A04C-F2100E142B83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B7B182E-BCA4-4D83-A04C-F2100E142B83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F753CD1-D4B9-47B3-A6BB-550DBCF468E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F753CD1-D4B9-47B3-A6BB-550DBCF468E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F753CD1-D4B9-47B3-A6BB-550DBCF468E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F753CD1-D4B9-47B3-A6BB-550DBCF468E8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
