@@ -2,7 +2,6 @@
 Code for clean crafter training
 
 ## Day 1
-- [Clean Code](clean-code/README.md)
 - [S.O.L.I.D kata](clean-code/README.md)
 - [Ugly Trivia refactoring kata](trivia-kata/README.md)
 
