@@ -1,5 +1,6 @@
 # Xtrem TDD workshop
 This workshop has been created for [Agilille 2022](https://agilille.fr/) conference.  
+Original repository available [here](https://github.com/les-tontons-crafters/xtrem-tdd-money-kata).
 
 Here is the pitch of it :
 
