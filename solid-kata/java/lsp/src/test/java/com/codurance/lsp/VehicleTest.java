@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class VehicleShould {
+class VehicleTest {
     @Test
     void start_engine() {
         Vehicle vehicle = new TestableVehicle();

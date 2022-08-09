@@ -8,7 +8,7 @@ import java.io.PrintStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class DogShould {
+class DogTest {
     private ByteArrayOutputStream consoleContent = new ByteArrayOutputStream();
     private final Dog dog = new Dog();
 

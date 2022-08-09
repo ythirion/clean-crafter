@@ -8,9 +8,9 @@ import java.io.PrintStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class BirdShould {
-    private final ByteArrayOutputStream consoleContent = new ByteArrayOutputStream();
-    private final Bird bird = new Bird();
+class DogTest {
+    private ByteArrayOutputStream consoleContent = new ByteArrayOutputStream();
+    private final Dog dog = new Dog();
 
     @BeforeEach
     public void setUp() {
@@ -20,15 +20,15 @@ class BirdShould {
 
     @Test
     void run() {
-        bird.run();
-        assertThat(consoleContent)
-                .hasToString("Bird is running");
+        dog.run();
+        assertThat(consoleContent.toString())
+                .isEqualTo("Dog is running");
     }
 
     @Test
-    void fly() {
-        bird.fly();
-        assertThat(consoleContent)
-                .hasToString("Bird is flying");
+    void bark() {
+        dog.bark();
+        assertThat(consoleContent.toString())
+                .isEqualTo("Dog is barking");
     }
 }

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class EmployeeShould {
+class EmployeeTest {
     private static final int BONUS = 100;
     private static final int SALARY = 1000;
 

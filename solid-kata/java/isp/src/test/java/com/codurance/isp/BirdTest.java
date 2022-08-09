@@ -8,7 +8,7 @@ import java.io.PrintStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class BirdShould {
+class BirdTest {
     private final ByteArrayOutputStream consoleContent = new ByteArrayOutputStream();
     private final Bird bird = new Bird();
 

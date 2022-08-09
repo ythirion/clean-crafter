@@ -3,8 +3,9 @@ package com.codurance.lsp;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
-class FillingStationShould {
+class FillingStationTest {
     private static final int FULL = 100;
     private final FillingStation fillingStation = new FillingStation();
 
@@ -18,15 +19,17 @@ class FillingStationShould {
                 .isEqualTo(FULL);
     }
 
+
     @Test
-    void recharge_a_VWDiesel() {
-        VWDieselCar car = new VWDieselCar();
+    void not_fail_refueling_an_electric_car() {
+        ElectricCar car = new ElectricCar();
 
-        fillingStation.refuel(car);
+        Throwable throwable = catchThrowable(() -> fillingStation.refuel(car));
 
-        assertThat(car.fuelTankLevel())
-                .isEqualTo(FULL);
+        assertThat(throwable)
+                .isNull();
     }
+
 
     @Test
     void recharge_an_electric_car() {
@@ -38,13 +41,14 @@ class FillingStationShould {
                 .isEqualTo(FULL);
     }
 
+
     @Test
-    void recharge_a_Tesla() {
-        TeslaCar car = new TeslaCar();
+    void not_fail_recharging_a_petrol_car() {
+        PetrolCar car = new PetrolCar();
 
-        fillingStation.charge(car);
+        Throwable throwable = catchThrowable(() -> fillingStation.charge(car));
 
-        assertThat(car.batteryLevel())
-                .isEqualTo(FULL);
+        assertThat(throwable)
+                .isNull();
     }
 }

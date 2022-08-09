@@ -1,6 +1,5 @@
 package com.codurance.srp;
 
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +17,8 @@ import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class AccountServiceShould {
+class AccountServiceTest {
+
     private static final int POSITIVE_AMOUNT = 100;
     private static final int NEGATIVE_AMOUNT = -POSITIVE_AMOUNT;
     private static final LocalDate TODAY = LocalDate.of(2017, 9, 6);
@@ -40,8 +40,9 @@ class AccountServiceShould {
     private AccountService accountService;
 
     @BeforeEach
-    public void setUp() {
-        accountService = new AccountService(transactionRepository, clock, console);
+    void setUp() {
+        StatementPrinter statementPrinter = new StatementPrinter(console);
+        accountService = new AccountService(transactionRepository, statementPrinter, clock);
     }
 
     private void setupClock() {
@@ -75,5 +76,3 @@ class AccountServiceShould {
         inOrder.verify(console).printLine("01/04/2014 | 1000.00 | 1000.00");
     }
 }
-
-
