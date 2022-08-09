@@ -4,6 +4,7 @@ Code for clean crafter training
 ## Day 1
 - [S.O.L.I.D kata](clean-code/README.md)
 - [Ugly Trivia refactoring kata](trivia-kata/README.md)
+- [Xtrem TDD](xtrem-tdd/README.md) (mutation testing example)
 
 ## Day 2
 - [Stack kata](stack-kata/README.md)
