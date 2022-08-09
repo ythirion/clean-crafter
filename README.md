@@ -2,17 +2,18 @@
 Code for clean crafter training
 
 ## Day 1
-- [S.O.L.I.D kata](clean-code/README.md)
+- [S.O.L.I.D kata](solid-kata/README.md)
 - [Ugly Trivia refactoring kata](trivia-kata/README.md)
-- [Xtrem TDD](xtrem-tdd/README.md) (mutation testing example)
+- [Trip Service kata](tripservice-kata/README.md)
 
 ## Day 2
-- [Stack kata](stack-kata/README.md)
+- [TDD starter](tdd-kata/README.md)
 - [Money problem](money-problem/README.md)
 - [Clean Tests](clean-tests/README.md)
+- [Xtrem TDD](xtrem-tdd/README.md) (mutation testing example)
 
 ## Prerequisites
-* Java : > 11
-* C# : > .NET 6
+* Java : >= 17
+* C# : >= .NET 6
 
 ![Clean Crafter](img/clean-crafter.png)
