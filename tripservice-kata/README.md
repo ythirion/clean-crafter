@@ -3,18 +3,18 @@
 
 The end result should be well-crafted code that express the domain.
 
-![Legacy code refactoring](scala/solution/img/legacy-code-refactoring.png)
+![Legacy code refactoring](img/legacy-code-refactoring.png)
 - Legacy code golden rule :
   `You cannot change any existing code if not covered by tests.`
   - The only exception is if we need to change the code to add unit tests, but in this case, just automated refactorings (via IDE) are allowed.
-- Step-by-step solution available [here](scala/solution/step-by-step.md)
+- Step-by-step solution available in [java](scala/solution/step-by-step.md) and [scala](scala/solution/step-by-step.md)
 
 ## Step-by-Step
 ## Tips
 - Start testing from shortest to deepest branch
 - Start refactoring from deepest to shortest branch
 
-![Working with Legacy Code Tips](scala/solution/img/tips.png)
+![Working with Legacy Code Tips](img/tips.png)
 
 ## Cover our code
 - Identify code smells in the `TripService` class
@@ -58,7 +58,7 @@ export class DatabaseConnector {
 }
 ```
 
-Say the connect() method is causing you problems when you try to put code into tests. Well, the `whole class is a Seam you can alter`.
+Say the `connect()` method is causing you problems when you try to put code into tests. Well, the `whole class is a Seam you can alter`.
 
 You can extend this class in tests to prevent it from connecting to an actual DB:
 
@@ -72,12 +72,7 @@ class FakeDatabaseConnector extends DatabaseConnector {
 ```
 
 ### Isolate the Singleton dependencies
-- Isolate the Singleton dependencies in their own method
-
-```scala
-UserSession getLoggedUser()
-TripDAO.findTripsByUser(user)
-```
+- Isolate the Singleton dependencies in their own methods
 - Do it via automated `extract method` automated refactoring
 
 ### Refactor our first test
@@ -88,20 +83,21 @@ TripDAO.findTripsByUser(user)
 ### Coverage as a Driver
 - Run your favorite `code coverage` tool
 - Use the result as a driver for implementing/writing new tests
-![Code coverage](scala/solution/img/coverage.png)
 - `From shortest to deepest branch`, what is our next test to write ?
-- Think about FIRST principles :
-  - We have introduced a strong dependency between our tests through the `loggedUser`
-  - We must ensure to respect FIRST principle
-    - `Fast` : Tests should be fast enough that you won't be discouraged from using them
-    - `Isolated` : Tests should not depend on the state of another test
-    - `Repeatable` : Tests should be repeatable in any environment without varying results
-    - `Self validating` : Each test will have a single boolean output of pass or fail
-    - `Thorough` : The tests we write should cover all happy paths/edge/corner/boundary cases
+
+#### FIRST principles :
+- We have introduced a strong dependency between our tests through the `loggedUser`
+- We must ensure to respect FIRST principle
+  - `Fast` : Tests should be fast enough that you won't be discouraged from using them
+  - `Isolated` : Tests should not depend on the state of another test
+  - `Repeatable` : Tests should be repeatable in any environment without varying results
+  - `Self validating` : Each test will have a single boolean output of pass or fail
+  - `Thorough` : The tests we write should cover all happy paths/edge/corner/boundary cases
 - Let's isolate our tests :
-    - With `scalatest` we can use the trait `BeforeAndAfterEach` to set up our tests
-- Be careful on the test quality
-  -  The user on which we ask for trips does not contain any trips nor any friends...
+    - With `junit`: we can use the annotation `@BeforeEach` to set up our tests
+    - With `scalatest`: we can use the trait `BeforeAndAfterEach` to set up our tests
+> Be careful on the test quality 
+- The user on which we ask for trips does not contain any trips nor any friends... 
   - `we can not be sure our feature is implemented well` if we have wrong setups
 - Avoid having not named values like `null` or `new Trip()` in your tests
   - Give sense to those by naming them
@@ -153,7 +149,7 @@ breakable {
 > The whole point of objects is that they are a technique to package data with the processes used on that data. A classic smell is a method that seems more interested in a class other than the one it is in. The most common focus of the envy is the data.
 
 - Let's fix it by using TDD (Test Driven Development)
-![img.png](scala/solution/img/tdd.png)
+![img.png](img/tdd.png)
 - Implement a new behavior on `User` : `isFriendWith`
   - By starting with a test : `"User" should "inform when users are not friends" in {`
 - Add a second test case : the passing one
@@ -162,37 +158,19 @@ breakable {
 - Simplify the code
 
 ### Guard clause
-- Move the guard clause at the beginning of the method to reduce complexity
-```scala
-  def getTripsByUser(user: User): List[Trip] = {
-    val loggedInUser = getLoggedUser
-    if (loggedInUser == null) {
-      throw new UserNotLoggedInException
-    }
-
-    var tripList: List[Trip] = List()
-    if (user.isFriendWith(loggedInUser)) {
-      tripList = findTripsByUser(user).toList
-    }
-    tripList
-  }
-```
+Move the guard clause at the beginning of the method to reduce complexity
 
 ### Simplify the code
-- We want to remove the `var tripList` now
+- We want to remove the `tripList` instantiation now
 - Use a business term for `List.empty`
 - Extract a method for the guard as well
 
 ### Be transparent in your contracts
-- For this kind of guard we should favor continuation
+- For this kind of guard we could favor continuation
   - If we do so we should change the return type of our method as well to represent the computation issue that could be raised
   - In other terms we should use a monad
   - Our methods should be as explicit as possible
-- Refactor the code to use a `Try`
-
-- We have changed the public contract of the class
-  - We must adapt our tests
-  - Use `TryValues` trait to simplify assertions
+- Refactor the code to use a `Try` (Optionally you could use [vavr](https://www.vavr.io/) in java)
 
 ### Make the implicit explicit
 - We can now attack our dependency issues
@@ -201,7 +179,6 @@ breakable {
 - Break the internal dependency by injecting the `loggedInUser` in our method
 - Let's use our IDE for that -> `Change signature...` 
   - `⌘ + F6`
-  ![Change signature](scala/solution/img/change-signature.png)
 - Fix the tests by passing the `loggedInUser`
 - Use the `loggedInUser` passed in method argument
 - We can now remove the `getLoggedUser` method
@@ -212,7 +189,7 @@ breakable {
 
 #### TripDAO
 - We want to be able to mock the behavior of our `Data Access` layer :
-    - We need an instance method to do so with `scalamock`
+    - We need an instance method to do so with `scalamock` / 'mockito'
 - First, let's write a test on the implemented behavior of the `TripDAO`
 - Now let's change our test and create our code from it
   - Something like this `new TripDAO().findTripsBy(UserBuilder.aUser().build())`
@@ -248,4 +225,4 @@ What can be improved ?
 - [Nicolas Carlo - understand legacy code](https://understandlegacycode.com/blog/key-points-of-working-effectively-with-legacy-code/#identify-seams-to-break-your-code-dependencies)
 - [Micheal Feathers - Working Effectively with Legacy Code](https://www.oreilly.com/library/view/working-effectively-with/0131177052/)
 
-<a href="https://youtu.be/LSqbXorkyfQ" rel="Sandro's video">![Sandro's video](scala/solution/img/video.png)</a>
+<a href="https://youtu.be/LSqbXorkyfQ" rel="Sandro's video">![Sandro's video](img/video.png)</a>

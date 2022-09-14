@@ -1,0 +1,19 @@
+root = true
+# Remove the line below if you want to inherit .editorconfig settings from higher directories
+
+# C# files
+[*.cs]
+
+#### Core EditorConfig Options ####
+
+# Indentation and spacing
+indent_size = 4
+indent_style = space
+tab_width = 4
+
+# Code style
+csharp_instance_members_qualify_members = property
+
+# Chaining method calls
+csharp_wrap_chained_method_calls = chop_always
+csharp_wrap_after_dot_in_method_calls = false
