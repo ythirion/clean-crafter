@@ -19,7 +19,7 @@ The only exception is if we need to change the code to add unit tests, but in th
    - Prepare the refactoring
    - Result in folder: `1.code-covered`
 2. [Improve confidence in our tests](steps/2.mutate-some-code.md)
-3. [Refactor the production code](steps/2.refactoring.md)
+3. [Refactor the production code](steps/3.refactoring.md)
 4. [Surface / other refactorings](steps/3.other-refactorings.md)
 
 ## What did we use / learn ?
