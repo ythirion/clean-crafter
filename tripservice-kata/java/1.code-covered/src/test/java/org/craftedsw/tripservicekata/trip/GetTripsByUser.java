@@ -11,41 +11,63 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.craftedsw.tripservicekata.user.UserBuilder.aUser;
 import static org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 
 @DisplayNameGeneration(ReplaceUnderscores.class)
 class GetTripsByUser {
-    private final User loggedInUser = new User();
-    private final User targetUser = new User();
+    private final User registeredUser = aUser().build();
     private TripService tripService;
     private User loggedUser;
 
     @BeforeEach
     void setup() {
-        loggedUser = loggedInUser;
+        loggedUser = registeredUser;
         tripService = createTripService();
     }
 
     @Nested
     class return_An_Error {
+        private final User guest = null;
+
         @Test
         void when_user_is_not_loggedIn() {
             notLoggedUser();
-            assertThatThrownBy(() -> tripService.getTripsByUser(targetUser))
+            assertThatThrownBy(() -> tripService.getTripsByUser(guest))
                     .isInstanceOf(UserNotLoggedInException.class);
         }
 
         private void notLoggedUser() {
-            loggedUser = null;
+            loggedUser = guest;
         }
     }
 
     @Nested
     class return_ {
+        private final Trip lisbon = new Trip();
+        private final Trip springfield = new Trip();
+        private final User anotherUser = aUser().build();
+
         @Test
         void no_trips_when_logged_user_is_not_a_friend_of_the_target_user() {
-            assertThat(tripService.getTripsByUser(targetUser))
+            var aUserWithTrips = aUser()
+                    .friendsWith(anotherUser)
+                    .travelledTo(lisbon)
+                    .build();
+
+            assertThat(tripService.getTripsByUser(aUserWithTrips))
                     .isEmpty();
+        }
+
+        @Test
+        void all_the_target_user_trips_when_logged_user_and_target_user_are_friends() {
+            var aUserWithTrips = aUser()
+                    .friendsWith(anotherUser, loggedUser)
+                    .travelledTo(lisbon, springfield)
+                    .build();
+
+            assertThat(tripService.getTripsByUser(aUserWithTrips))
+                    .hasSize(2);
         }
     }
 
