@@ -6,24 +6,28 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.craftedsw.tripservicekata.user.UserBuilder.aUser;
 import static org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
+import static org.mockito.Mockito.when;
 
 @DisplayNameGeneration(ReplaceUnderscores.class)
+@ExtendWith(MockitoExtension.class)
 class GetTripsByUser {
     private final User registeredUser = aUser().build();
     private TripService tripService;
-    private User loggedUser;
+
+    @Mock
+    private TripRepository repositoryMock;
 
     @BeforeEach
     void setup() {
-        loggedUser = registeredUser;
-        tripService = createTripService();
+        tripService = new TripService(repositoryMock);
     }
 
     @Nested
@@ -32,13 +36,8 @@ class GetTripsByUser {
 
         @Test
         void when_user_is_not_loggedIn() {
-            notLoggedUser();
-            assertThatThrownBy(() -> tripService.getTripsByUser(guest))
+            assertThatThrownBy(() -> tripService.getTripsByUser(registeredUser, guest))
                     .isInstanceOf(UserNotLoggedInException.class);
-        }
-
-        private void notLoggedUser() {
-            loggedUser = guest;
         }
     }
 
@@ -55,36 +54,23 @@ class GetTripsByUser {
                     .travelledTo(lisbon)
                     .build();
 
-            assertThat(tripService.getTripsByUser(aUserWithTrips))
+            assertThat(tripService.getTripsByUser(aUserWithTrips, registeredUser))
                     .isEmpty();
         }
 
         @Test
         void all_the_target_user_trips_when_logged_user_and_target_user_are_friends() {
             var aUserWithTrips = aUser()
-                    .friendsWith(anotherUser, loggedUser)
+                    .friendsWith(anotherUser, registeredUser)
                     .travelledTo(lisbon, springfield)
                     .build();
 
-            assertThat(tripService.getTripsByUser(aUserWithTrips))
+            when(repositoryMock.findTripsByUser(aUserWithTrips))
+                    .thenReturn(aUserWithTrips.trips());
+
+            assertThat(tripService.getTripsByUser(aUserWithTrips, registeredUser))
                     .hasSize(2)
                     .contains(lisbon, springfield);
-        }
-    }
-
-    private TripService createTripService() {
-        return new SeamTripService();
-    }
-
-    private class SeamTripService extends TripService {
-        @Override
-        protected User getLoggedUser() {
-            return loggedUser;
-        }
-
-        @Override
-        protected List<Trip> findTripsByUser(User user) {
-            return user.trips();
         }
     }
 }
