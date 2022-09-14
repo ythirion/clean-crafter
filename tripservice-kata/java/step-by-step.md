@@ -18,8 +18,9 @@ The only exception is if we need to change the code to add unit tests, but in th
 1. [Cover the production code](steps/1.cover-the-code.md)
    - Prepare the refactoring
    - Result in folder: `1.code-covered`
-2. [Refactor the production code](steps/2.refactoring.md)
-3. [Surface / other refactorings](steps/3.other-refactorings.md)
+2. [Improve confidence in our tests](steps/2.mutate-some-code.md)
+3. [Refactor the production code](steps/2.refactoring.md)
+4. [Surface / other refactorings](steps/3.other-refactorings.md)
 
 ## What did we use / learn ?
 - Seams
