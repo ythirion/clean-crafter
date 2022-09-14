@@ -6,16 +6,18 @@ Legacy code golden rules :
 
 The only exception is if we need to change the code to add unit tests, but in this case, just automated refactorings (via IDE) are allowed.
 
-![Legacy code refactoring](../../img/legacy-code-refactoring.png)
+![Legacy code refactoring](../img/legacy-code-refactoring.png)
 
 ## Tips
 - Start testing from shortest to deepest branch
 - Start refactoring from deepest to shortest branch
 
-![Working with Legacy Code Tips](../../img/tips.png)
+![Working with Legacy Code Tips](../img/tips.png)
 
 ## My "solution"
-1. [Cover the production code](steps/1.cover-the-code.md) (prepare the refactoring)
+1. [Cover the production code](steps/1.cover-the-code.md)
+   - Prepare the refactoring
+   - Result in folder: `1.code-covered`
 2. [Refactor the production code](steps/2.refactoring.md)
 3. [Surface / other refactorings](steps/3.other-refactorings.md)
 

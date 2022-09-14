@@ -16,7 +16,7 @@ The end result should be well-crafted code that express the domain.
 
 ![Working with Legacy Code Tips](img/tips.png)
 
-## Cover our code
+## 1.Cover our code
 - Identify code smells in the `TripService` class
 - Write a first test : do it "naively"
   - Which one would you write first ?
@@ -126,7 +126,10 @@ aUserWithTrips.addFriend(loggedInUser)
 
 > We are now ready to refactor
 
-## Refactoring
+### Test quality
+> How could we measure our test quality?
+
+## 2.Refactoring
 - Start refactoring from deepest to shortest branch
 
 ### [Feature Envy](http://wiki.c2.com/?FeatureEnvySmell)
@@ -205,7 +208,7 @@ Move the guard clause at the beginning of the method to reduce complexity
   ![Mock no set up](scala/solution/img/mock-error.png)
 - Setup our stub
 
-## Surface refactoring
+## 3.Surface refactoring
 What can be improved ?
 
 ## What did we use / learn ?
