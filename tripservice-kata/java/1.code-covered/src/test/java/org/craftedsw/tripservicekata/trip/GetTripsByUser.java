@@ -67,7 +67,8 @@ class GetTripsByUser {
                     .build();
 
             assertThat(tripService.getTripsByUser(aUserWithTrips))
-                    .hasSize(2);
+                    .hasSize(2)
+                    .contains(lisbon, springfield);
         }
     }
 
