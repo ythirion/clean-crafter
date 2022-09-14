@@ -11,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.craftedsw.tripservicekata.user.UserBuilder.aUser;
 import static org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import static org.mockito.Mockito.when;
@@ -36,7 +35,7 @@ class GetTripsByUser {
 
         @Test
         void when_user_is_not_loggedIn() {
-            assertThatThrownBy(() -> tripService.retrieveFriendTrips(registeredUser, guest))
+            assertThat(tripService.retrieveFriendTrips(registeredUser, guest).getCause())
                     .isInstanceOf(UserNotLoggedInException.class);
         }
     }
@@ -54,7 +53,7 @@ class GetTripsByUser {
                     .travelledTo(lisbon)
                     .build();
 
-            assertThat(tripService.retrieveFriendTrips(aUserWithTrips, registeredUser))
+            assertThat(tripService.retrieveFriendTrips(aUserWithTrips, registeredUser).get())
                     .isEmpty();
         }
 
@@ -68,7 +67,7 @@ class GetTripsByUser {
             when(repositoryMock.findTripsByUser(aUserWithTrips))
                     .thenReturn(aUserWithTrips.getTrips());
 
-            assertThat(tripService.retrieveFriendTrips(aUserWithTrips, registeredUser))
+            assertThat(tripService.retrieveFriendTrips(aUserWithTrips, registeredUser).get())
                     .hasSize(2)
                     .contains(lisbon, springfield);
         }
