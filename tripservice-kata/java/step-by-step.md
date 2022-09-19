@@ -16,8 +16,6 @@ The only exception is if we need to change the code to add unit tests, but in th
 
 ## My "solution"
 1. [Cover the production code](steps/1.cover-the-code.md)
-   - Prepare the refactoring
-   - Result in folder: `1.code-covered`
 2. [Improve confidence in our tests](steps/2.mutate-some-code.md)
 3. [Refactor the production code](steps/3.refactoring.md)
 4. [Other refactorings](steps/4.other-refactorings.md)
