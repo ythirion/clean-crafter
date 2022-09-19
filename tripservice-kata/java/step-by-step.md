@@ -15,6 +15,7 @@ The only exception is if we need to change the code to add unit tests, but in th
 ![Working with Legacy Code Tips](../img/tips.png)
 
 ## My "solution"
+1 solution folder per step:
 1. [Cover the production code](steps/1.cover-the-code.md)
 2. [Improve confidence in our tests](steps/2.mutate-some-code.md)
 3. [Refactor the production code](steps/3.refactoring.md)

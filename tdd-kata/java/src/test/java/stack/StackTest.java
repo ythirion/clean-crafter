@@ -1,5 +1,0 @@
-package stack;
-
-class StackTest {
-
-}
