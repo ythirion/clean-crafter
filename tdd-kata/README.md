@@ -1,3 +1,21 @@
+# Roman numerals converter
+Implement a Roman numeral converter. 
+The code must be able to take decimals up to 3999 and convert to their roman equivalent.
+
+Examples:
+- 1 - I
+- 5    - V
+- 10   - X
+- 50   - L
+- 100  - C
+- 500  - D
+- 1000 - M
+- 4 - IV
+- 13 - XIII
+- 2499 - MMCDXCIX
+
+Original kata and instructions available [here](https://www.codurance.com/katalyst/roman-numerals)
+
 # stack-kata
 Kata to practice TDD
 
