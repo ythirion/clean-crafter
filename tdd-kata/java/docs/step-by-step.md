@@ -16,7 +16,9 @@ We have already a `tests list` provided:
 But this sampling can be improved regarding the problem instructions. 
 
 What about this business rule: `The code must be able to take decimals up to 3999 and convert to their roman equivalent.`
+
 What do we do for 0? for -1? -1000? 4000?
+
 Let's add some tests in our list based on this rule:
 ```text
 0 - None
@@ -40,26 +42,26 @@ Let's add some tests in our list based on this rule:
 - we have directly to ask ourselves how we would like to represent potential errors (constrain inputs, extend output, continuation functions, throw an exception, ...)
  
 ```java
-    @Test
-    void generate_none_for_0() {
-        Optional<String> result = roman.numerals.RomanNumerals.convert(0);
-        assertThat(result)
-                .isEmpty();
+@Test
+void generate_none_for_0() {
+    Optional<String> result = roman.numerals.RomanNumerals.convert(0);
+    assertThat(result)
+            .isEmpty();
+}
+
+// Generate code from test
+public class RomanNumerals {
+    public static Optional<String> convert(int decimalNumber) {
+        return null;
     }
-    
-    // Generate code from test
-    public class RomanNumerals {
-        public static Optional<String> convert(int decimalNumber) {
-            return null;
-        }
-    }
+}
 ```
 
 :green_circle: Pass it green as fast as possible.
 ```java
-    public static Optional<String> convert(int decimalNumber) {
-        return Optional.empty();
-    }
+public static Optional<String> convert(int decimalNumber) {
+    return Optional.empty();
+}
 ```
 
 Update our tests list:
@@ -81,31 +83,31 @@ Update our tests list:
 
 :large_blue_circle: Improve our test (inline)
 ```java
-    @Test
-    void generate_none_for_0() {
-        assertThat(convert(0))
-                .isEmpty();
-    }
+@Test
+void generate_none_for_0() {
+    assertThat(convert(0))
+            .isEmpty();
+}
 ```
 
 :red_circle: Write another failing test, a "passing" one this time.
 ```java
-    @Test
-    void generate_I_for_1() {
-        assertThat(convert(1))
-                .isPresent()
-                .contains("I");
-    }
+@Test
+void generate_I_for_1() {
+    assertThat(convert(1))
+            .isPresent()
+            .contains("I");
+}
 ```
 
 :green_circle: Pass it green as fast as possible.
 What is the fastest path to green?
-```
-    public static Optional<String> convert(int decimalNumber) {
-        return (decimalNumber == 1)
-                ? of("I")
-                : empty();
-    }
+```java
+public static Optional<String> convert(int decimalNumber) {
+    return (decimalNumber == 1)
+            ? of("I")
+            : empty();
+}
 ```
 
 ```text
@@ -128,21 +130,21 @@ What is the fastest path to green?
 
 :red_circle: `5 - V`
 ```java
-    @Test
-    void generate_V_for_5() {
-        assertThat(convert(5))
-                .isPresent()
-                .contains("V");
-    }
+@Test
+void generate_V_for_5() {
+    assertThat(convert(5))
+            .isPresent()
+            .contains("V");
+}
 ```
 
 :green_circle: Add the new case
 ```java
-    public static Optional<String> convert(int decimalNumber) {
-        if (decimalNumber == 1) return of("I");
-        else if (decimalNumber == 5) return of("V");
-        return empty();
-    }
+public static Optional<String> convert(int decimalNumber) {
+    if (decimalNumber == 1) return of("I");
+    else if (decimalNumber == 5) return of("V");
+    return empty();
+}
 ```
 
 ```text
@@ -243,20 +245,20 @@ class RomanNumeralsTest {
 After a few cycles by still applying `Fake it until you make it` approach you should have your code looking like this:
 
 ```java
-    public static Optional<String> convert(int decimalNumber) {
-        return switch (decimalNumber) {
-            case 1 -> of("I");
-            case 4 -> of("IV");
-            case 5 -> of("V");
-            case 10 -> of("X");
-            case 13 -> of("XIII");
-            case 50 -> of("L");
-            case 100 -> of("C");
-            case 500 -> of("D");
-            case 1000 -> of("M");
-            default -> empty();
-        };
-    }
+public static Optional<String> convert(int decimalNumber) {
+    return switch (decimalNumber) {
+        case 1 -> of("I");
+        case 4 -> of("IV");
+        case 5 -> of("V");
+        case 10 -> of("X");
+        case 13 -> of("XIII");
+        case 50 -> of("L");
+        case 100 -> of("C");
+        case 500 -> of("D");
+        case 1000 -> of("M");
+        default -> empty();
+    };
+}
 ```
 
 And our tests list:
@@ -282,136 +284,136 @@ We have 2 fascinating cases here with `4` and `13`...
 Before working on `13`, let's start with a simplest one: `3`
 
 ```java
-    private static Stream<Arguments> passingExamples() {
-        return of(
-                Arguments.of(1, "I"),
-                Arguments.of(3, "III"),
-                Arguments.of(5, "V"),
-                Arguments.of(10, "X"),
-                Arguments.of(50, "L"),
-                Arguments.of(100, "C"),
-                Arguments.of(500, "D"),
-                Arguments.of(1000, "M")
-        );
-    }
+private static Stream<Arguments> passingExamples() {
+    return of(
+            Arguments.of(1, "I"),
+            Arguments.of(3, "III"),
+            Arguments.of(5, "V"),
+            Arguments.of(10, "X"),
+            Arguments.of(50, "L"),
+            Arguments.of(100, "C"),
+            Arguments.of(500, "D"),
+            Arguments.of(1000, "M")
+    );
+}
 ```
 
 :green_circle: For numbers lower than 4, we need to simply concatenate "I" together.
 ```java
 public static Optional<String> convert(int decimalNumber) {
-        if (decimalNumber <= 3) {
-            var roman = "";
-            for (int i = 0; i < decimalNumber; i++) {
-                roman += "I";
-            }
-            return of(roman);
+    if (decimalNumber <= 3) {
+        var roman = "";
+        for (int i = 0; i < decimalNumber; i++) {
+            roman += "I";
         }
-
-        return switch (decimalNumber) {
-            case 1 -> of("I");
-            case 5 -> of("V");
-            case 10 -> of("X");
-            case 50 -> of("L");
-            case 100 -> of("C");
-            case 500 -> of("D");
-            case 1000 -> of("M");
-            default -> empty();
-        };
+        return of(roman);
     }
+
+    return switch (decimalNumber) {
+        case 1 -> of("I");
+        case 5 -> of("V");
+        case 10 -> of("X");
+        case 50 -> of("L");
+        case 100 -> of("C");
+        case 500 -> of("D");
+        case 1000 -> of("M");
+        default -> empty();
+    };
+}
 ```
 
 By implementing it like this, we have an impact on the `0 case`.
 Our priority is to fix it asap.
 
 ```java
-    public static Optional<String> convert(int decimalNumber) {
-        if (decimalNumber == 0)
-            return empty();
+public static Optional<String> convert(int decimalNumber) {
+    if (decimalNumber == 0)
+        return empty();
 
-        if (decimalNumber <= 3) {
-            var roman = "";
-            for (int i = 0; i < decimalNumber; i++) {
-                roman += "I";
-            }
-            return of(roman);
+    if (decimalNumber <= 3) {
+        var roman = "";
+        for (int i = 0; i < decimalNumber; i++) {
+            roman += "I";
         }
-
-
-        return switch (decimalNumber) {
-            case 1 -> of("I");
-            case 5 -> of("V");
-            case 10 -> of("X");
-            case 50 -> of("L");
-            case 100 -> of("C");
-            case 500 -> of("D");
-            case 1000 -> of("M");
-            default -> empty();
-        };
+        return of(roman);
     }
+
+
+    return switch (decimalNumber) {
+        case 1 -> of("I");
+        case 5 -> of("V");
+        case 10 -> of("X");
+        case 50 -> of("L");
+        case 100 -> of("C");
+        case 500 -> of("D");
+        case 1000 -> of("M");
+        default -> empty();
+    };
+}
 ```
 
 :large_blue_circle: We have a lot of refactoring to make in our production code
 Reduce complexity of the `convert` method by extracting some logic:
 ```java
 public static Optional<String> convert(int decimalNumber) {
-        return notInRange(decimalNumber)
-                ? empty()
-                : convertSafely(decimalNumber);
-    }
+    return notInRange(decimalNumber)
+            ? empty()
+            : convertSafely(decimalNumber);
+}
 
-    private static Optional<String> convertSafely(int decimalNumber) {
-        if (decimalNumber <= 3) {
-            var roman = "";
-            for (int i = 0; i < decimalNumber; i++) {
-                roman += "I";
-            }
-            return of(roman);
+private static Optional<String> convertSafely(int decimalNumber) {
+    if (decimalNumber <= 3) {
+        var roman = "";
+        for (int i = 0; i < decimalNumber; i++) {
+            roman += "I";
         }
-
-        return switch (decimalNumber) {
-            case 1 -> of("I");
-            case 5 -> of("V");
-            case 10 -> of("X");
-            case 50 -> of("L");
-            case 100 -> of("C");
-            case 500 -> of("D");
-            case 1000 -> of("M");
-            default -> empty();
-        };
+        return of(roman);
     }
 
-    private static boolean notInRange(int decimalNumber) {
-        return decimalNumber == 0;
-    }
+    return switch (decimalNumber) {
+        case 1 -> of("I");
+        case 5 -> of("V");
+        case 10 -> of("X");
+        case 50 -> of("L");
+        case 100 -> of("C");
+        case 500 -> of("D");
+        case 1000 -> of("M");
+        default -> empty();
+    };
+}
+
+private static boolean notInRange(int decimalNumber) {
+    return decimalNumber == 0;
+}
 ```
 
 Remove duplication (`case 1`) and simplify loop:
 ```java
 public static Optional<String> convert(int decimalNumber) {
-        return notInRange(decimalNumber)
-                ? empty()
-                : convertSafely(decimalNumber);
+    return notInRange(decimalNumber)
+            ? empty()
+            : convertSafely(decimalNumber);
+}
+
+private static Optional<String> convertSafely(int decimalNumber) {
+    if (decimalNumber <= 3) {
+        return of("I".repeat(decimalNumber));
     }
 
-    private static Optional<String> convertSafely(int decimalNumber) {
-        if (decimalNumber <= 3) {
-            return of("I".repeat(decimalNumber));
-        }
+    return switch (decimalNumber) {
+        case 5 -> of("V");
+        case 10 -> of("X");
+        case 50 -> of("L");
+        case 100 -> of("C");
+        case 500 -> of("D");
+        case 1000 -> of("M");
+        default -> empty();
+    };
+}
 
-        return switch (decimalNumber) {
-            case 5 -> of("V");
-            case 10 -> of("X");
-            case 50 -> of("L");
-            case 100 -> of("C");
-            case 500 -> of("D");
-            case 1000 -> of("M");
-            default -> empty();
-        };
-    }
-
-    private static boolean notInRange(int decimalNumber) {
-        return decimalNumber == 0;
-    }
+private static boolean notInRange(int decimalNumber) {
+    return decimalNumber == 0;
+}
 ```
 
 
@@ -423,27 +425,27 @@ Arguments.of(7, "VII"),
 :green_circle: Let's focus on test cases lower than 10
 ```java
 private static Optional<String> convertSafely(int decimalNumber) {
-        if (decimalNumber < 10) {
-            var roman = "";
-            var remaining = decimalNumber;
+    if (decimalNumber < 10) {
+        var roman = "";
+        var remaining = decimalNumber;
 
-            if (decimalNumber >= 5) {
-                roman += "V";
-                remaining -= 5;
-            }
-            return of(roman + "I".repeat(remaining));
+        if (decimalNumber >= 5) {
+            roman += "V";
+            remaining -= 5;
         }
-
-        return switch (decimalNumber) {
-            case 5 -> of("V");
-            case 10 -> of("X");
-            case 50 -> of("L");
-            case 100 -> of("C");
-            case 500 -> of("D");
-            case 1000 -> of("M");
-            default -> empty();
-        };
+        return of(roman + "I".repeat(remaining));
     }
+
+    return switch (decimalNumber) {
+        case 5 -> of("V");
+        case 10 -> of("X");
+        case 50 -> of("L");
+        case 100 -> of("C");
+        case 500 -> of("D");
+        case 1000 -> of("M");
+        default -> empty();
+    };
+}
 ```
 
 :large_blue_circle: What can be simplified?
@@ -476,31 +478,31 @@ Arguments.of(13, "XIII"),
 :green_circle: Make it pass for values under 50
 ```java
 private static Optional<String> convertSafely(int decimalNumber) {
-        if (decimalNumber < 50) {
-            var roman = "";
-            var remaining = decimalNumber;
+    if (decimalNumber < 50) {
+        var roman = "";
+        var remaining = decimalNumber;
 
-            if (remaining >= 10) {
-                roman += "X";
-                remaining -= 10;
-            }
-            if (remaining >= 5) {
-                roman += "V";
-                remaining -= 5;
-            }
-            return of(roman + "I".repeat(Math.max(0, remaining)));
+        if (remaining >= 10) {
+            roman += "X";
+            remaining -= 10;
         }
-
-        return switch (decimalNumber) {
-            case 10 -> of("X");
-            case 13 -> of("XIII");
-            case 50 -> of("L");
-            case 100 -> of("C");
-            case 500 -> of("D");
-            case 1000 -> of("M");
-            default -> empty();
-        };
+        if (remaining >= 5) {
+            roman += "V";
+            remaining -= 5;
+        }
+        return of(roman + "I".repeat(Math.max(0, remaining)));
     }
+
+    return switch (decimalNumber) {
+        case 10 -> of("X");
+        case 13 -> of("XIII");
+        case 50 -> of("L");
+        case 100 -> of("C");
+        case 500 -> of("D");
+        case 1000 -> of("M");
+        default -> empty();
+    };
+}
 ```
 
 ## Use a Map
@@ -549,37 +551,37 @@ public class RomanNumerals {
 
 Could we handle the case `I` with the same technique?
 ```java
-    private static final Map<Integer, String> decimalToNumerals = Map.of(
-            10, "X",
-            5, "V",
-            // Add entry
-            1, "I"
-    );
-    ...
+private static final Map<Integer, String> decimalToNumerals = Map.of(
+        10, "X",
+        5, "V",
+        // Add entry
+        1, "I"
+);
+...
 
-    private static Optional<String> convertSafely(int input) {
-        if (input < 50) {
-            StringBuilder roman = new StringBuilder();
-            var remaining = input;
+private static Optional<String> convertSafely(int input) {
+    if (input < 50) {
+        StringBuilder roman = new StringBuilder();
+        var remaining = input;
 
-            for (var decimalToNumber : decimalToNumerals.entrySet()) {
-                // Loop on the remaining
-                while (remaining >= decimalToNumber.getKey()) {
-                    roman.append(decimalToNumber.getValue());
-                    remaining -= decimalToNumber.getKey();
-                }
+        for (var decimalToNumber : decimalToNumerals.entrySet()) {
+            // Loop on the remaining
+            while (remaining >= decimalToNumber.getKey()) {
+                roman.append(decimalToNumber.getValue());
+                remaining -= decimalToNumber.getKey();
             }
-            return of(roman.toString());
         }
-
-        return switch (input) {
-            case 50 -> of("L");
-            case 100 -> of("C");
-            case 500 -> of("D");
-            case 1000 -> of("M");
-            default -> empty();
-        };
+        return of(roman.toString());
     }
+
+    return switch (input) {
+        case 50 -> of("L");
+        case 100 -> of("C");
+        case 500 -> of("D");
+        case 1000 -> of("M");
+        default -> empty();
+    };
+}
 ```
 
 What about other cases? 
@@ -654,19 +656,19 @@ Arguments.of(4, "IV"),
 
 :green_circle: Let's add it in our converter.
 ```java
-    private static TreeMap<Integer, String> createMapForDecimalToNumerals() {
-        var map = new TreeMap<Integer, String>(Comparator.reverseOrder());
-        map.put(1000, "M");
-        map.put(500, "D");
-        map.put(100, "C");
-        map.put(50, "L");
-        map.put(10, "X");
-        map.put(5, "V");
-        map.put(4, "IV");
-        map.put(1, "I");
+private static TreeMap<Integer, String> createMapForDecimalToNumerals() {
+    var map = new TreeMap<Integer, String>(Comparator.reverseOrder());
+    map.put(1000, "M");
+    map.put(500, "D");
+    map.put(100, "C");
+    map.put(50, "L");
+    map.put(10, "X");
+    map.put(5, "V");
+    map.put(4, "IV");
+    map.put(1, "I");
 
-        return map;
-    }
+    return map;
+}
 ```
 
 :large_blue_circle: Anything to refactor?
@@ -743,79 +745,78 @@ If we did our job well, we should be able to add the latest passing example and 
 ## Other non-passing examples
 :red_circle: Let's improve our confidence in our algorithm by covering non passing examples.
 ```java
-    private static Stream<Arguments> nonPassingExamples() {
-        return of(
-                Arguments.of(0),
-                Arguments.of(-100),
-                Arguments.of(4000)
-        );
-    }
-    
-    @ParameterizedTest()
-    @MethodSource("nonPassingExamples")
-    void generate_none_for_numbers_outside_of_range(int number) {
-        assertThat(convert(number))
-                .isEmpty();
-    }
+private static Stream<Arguments> nonPassingExamples() {
+    return of(
+            Arguments.of(0),
+            Arguments.of(-100),
+            Arguments.of(4000)
+    );
+}
+
+@ParameterizedTest()
+@MethodSource("nonPassingExamples")
+void generate_none_for_numbers_outside_of_range(int number) {
+    assertThat(convert(number))
+            .isEmpty();
+}
 ```
 
 :green_circle: Make it green by changing our `notInRange` method:
 ```java
-    public static Optional<String> convert(int input) {
-        return notInRange(input)
-                ? empty()
-                : of(convertSafely(input));
-    }
+public static Optional<String> convert(int input) {
+    return notInRange(input)
+            ? empty()
+            : of(convertSafely(input));
+}
 
-    private static String convertSafely(int input) {
-        StringBuilder roman = new StringBuilder();
-        var remaining = input;
+private static String convertSafely(int input) {
+    StringBuilder roman = new StringBuilder();
+    var remaining = input;
 
-        for (var decimalToNumber : decimalToNumerals.entrySet()) {
-            while (remaining >= decimalToNumber.getKey()) {
-                roman.append(decimalToNumber.getValue());
-                remaining -= decimalToNumber.getKey();
-            }
+    for (var decimalToNumber : decimalToNumerals.entrySet()) {
+        while (remaining >= decimalToNumber.getKey()) {
+            roman.append(decimalToNumber.getValue());
+            remaining -= decimalToNumber.getKey();
         }
-        return roman.toString();
     }
+    return roman.toString();
+}
 
-    private static boolean notInRange(int input) {
-        return input <= 0 || input > 3999;
-    }
+private static boolean notInRange(int input) {
+    return input <= 0 || input > 3999;
 }
 ```
 
 :large_blue_circle: Anything to refactor?
 ```java
-    public static Optional<String> convert(int input) {
-        // Invert the logic to make it more readable (team convention)
-        return inRange(input)
-                ? of(convertSafely(input))
-                : empty();
-    }
+public static Optional<String> convert(int input) {
+    // Invert the logic to make it more readable (team convention)
+    return inRange(input)
+            ? of(convertSafely(input))
+            : empty();
+}
 
-    private static String convertSafely(int input) {
-        StringBuilder roman = new StringBuilder();
-        var remaining = input;
+private static String convertSafely(int input) {
+    StringBuilder roman = new StringBuilder();
+    var remaining = input;
 
-        for (var decimalToNumber : decimalToNumerals.entrySet()) {
-            while (remaining >= decimalToNumber.getKey()) {
-                roman.append(decimalToNumber.getValue());
-                remaining -= decimalToNumber.getKey();
-            }
+    for (var decimalToNumber : decimalToNumerals.entrySet()) {
+        while (remaining >= decimalToNumber.getKey()) {
+            roman.append(decimalToNumber.getValue());
+            remaining -= decimalToNumber.getKey();
         }
-        return roman.toString();
     }
+    return roman.toString();
+}
 
-    private static boolean inRange(int input) {
-        // Extract constant
-        return isPositive(input) && input <= MAX_SUPPORTED_NUMBER;
-    }
+private static boolean inRange(int input) {
+    // Extract constant
+    return isPositive(input) && input <= MAX_SUPPORTED_NUMBER;
+}
 
-    private static boolean isPositive(int input) {
-        return input > 0;
-    }
+private static boolean isPositive(int input) {
+    return input > 0;
+}
 ```
 
 ```text
@@ -892,18 +893,18 @@ public final class RomanNumerals {
 For non-passing tests we could replace them with `property-based tests`:
 
 ```xml
-        <dependency>
-            <groupId>com.pholser</groupId>
-            <artifactId>junit-quickcheck-core</artifactId>
-            <version>${junit-quickcheck.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.pholser</groupId>
-            <artifactId>junit-quickcheck-generators</artifactId>
-            <version>${junit-quickcheck.version}</version>
-            <scope>test</scope>
-        </dependency>
+<dependency>
+    <groupId>com.pholser</groupId>
+    <artifactId>junit-quickcheck-core</artifactId>
+    <version>${junit-quickcheck.version}</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>com.pholser</groupId>
+    <artifactId>junit-quickcheck-generators</artifactId>
+    <version>${junit-quickcheck.version}</version>
+    <scope>test</scope>
+</dependency>
 ```
     
 ```java
