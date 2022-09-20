@@ -16,6 +16,8 @@ Examples:
 
 Original kata and instructions available [here](https://www.codurance.com/katalyst/roman-numerals)
 
+A proposal of step-by-step solution is available [here](java/docs/step-by-step.md)
+
 # stack-kata
 Kata to practice TDD
 
