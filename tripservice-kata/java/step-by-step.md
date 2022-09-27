@@ -38,4 +38,4 @@ Sources :
 - [Sandro Mancuso - Testing legacy with Hard-wired dependencies](https://www.codurance.com/publications/2011/07/16/testing-legacy-hard-wired-dependencies)
 - [Micheal Feathers - Working Effectively with Legacy Code](https://www.oreilly.com/library/view/working-effectively-with/0131177052/)
 
-<a href="https://youtu.be/LSqbXorkyfQ" rel="Sandro's video">![Sandro's video](../../img/video.png)</a>
+<a href="https://youtu.be/LSqbXorkyfQ" rel="Sandro's video">![Sandro's video](../img/video.png)</a>
